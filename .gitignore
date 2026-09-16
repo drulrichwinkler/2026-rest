@@ -1,0 +1,28 @@
+# Betriebssystem
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Typst-Tooling (nur die gebauten *.pdf gehören ins Repo, nicht das Werkzeug)
+lib.typ
+build.sh
+assets/
+*.typ
+
+# Python – die Studierenden legen ihr Projekt selbst an
+__pycache__/
+*.pyc
+.venv/
+
+.pytest_cache/
+.ruff_cache/
+
+# Laufzeit-Datenablage (der Ordner loesung/ selbst gehoert ins Repo)
+loesung/data/
+
+# Interne Bau-Anleitung (nicht für Studierende)
+HANDOFF.md

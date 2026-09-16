@@ -1,0 +1,32 @@
+# ===========================================================================
+# Anfragen zum Ausprobieren – für "REST Client", "Thunder Client" oder Postman.
+#
+# In VS Code steht über jedem ### ein Klick-Link "Send Request" (REST Client).
+# Thunder Client und Postman können diese Datei importieren.
+#
+# Die Pfade hier nehmen willkürlich EINE der Varianten aus Aufgabe A3 an.
+# Passen Sie sie an Ihren Entwurf an – das ist Teil der Übung, kein Fehler
+# dieser Datei.
+# ===========================================================================
+
+@basis = http://localhost:8000
+@paket = 4711
+@etag = "1"
+@key = 11111111-2222-3333-4444-555555555555
+
+
+### Paket aufgeben  -> erwartet 201 + Location
+POST {{basis}}/parcels
+Content-Type: application/json
+
+{
+  "recipient": "Erika Mustermann",
+  "street": "Hauptstr. 1",
+  "city": "01067 Dresden",
+  "weight_kg": 2.5
+}
+
+
+### Paket lesen 
+GET {{basis}}/parcels/{{paket}}
+
