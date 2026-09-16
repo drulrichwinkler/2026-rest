@@ -183,6 +183,18 @@ Zustand.
 **C3** Jede Zustandsänderung wird mit Zeitstempel an `tracking/<id>.log`
 angehängt, `GET /parcels/{id}/tracking` liefert sie chronologisch.
 
+**C4 – Löschen.** Ein Paket, das noch nicht `ACCEPTED` ist, darf der Kunde
+zurückziehen: `DELETE /parcels/{id}`. Bei einem `DELIVERED`-Paket lehnen Sie ab
+(C2).
+
+`DELETE` ist laut HTTP idempotent. Rufen Sie es zweimal auf und entscheiden
+Sie, was der **zweite** Aufruf antwortet (welcher Status-Code)
+
+Begründen Sie Ihre Wahl. Und beantworten Sie die Frage, die daran hängt: Kann
+ein Client, dessen Antwort im Netz verlorenging, unterscheiden, ob _er_ das
+Paket gelöscht hat oder ob die ID nie existierte? Halten Sie außerdem fest,
+warum `DELETE` keinen `Idempotency-Key` braucht, `POST /payments` aber schon.
+
 ---
 
 ## Teil D – Zwei Fahrer, ein Paket
@@ -268,7 +280,6 @@ Freiwillig, wenn Sie früh fertig sind:
 - **`429 Too Many Requests`** mit `Retry-After` für die Sendungsverfolgung.
 - **Paginierung** für `GET /parcels` – und die Frage, was passiert, wenn
   zwischen Seite 1 und Seite 2 ein Paket dazukommt.
-- **`DELETE`** – wie machen Sie es idempotent? Was antwortet der zweite Aufruf?
 - **Write-Ahead-Log.** Sie haben mit `tracking/<id>.log` schon eins. Was wäre,
   wenn der Paketzustand _nur_ aus diesem Log rekonstruiert würde und
   `parcels/<id>.json` bloß ein Zwischenspeicher wäre? Das ist die Grundidee von
