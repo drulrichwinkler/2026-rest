@@ -91,32 +91,3 @@ Heute ist sie es nicht mehr, aus vier Gründen:
 Bei Python kam die Eigenart dazu, dass das **GIL** Threads für rechenlastige
 Arbeit ohnehin unattraktiv machte. Für I/O taugen sie weiter, und genau dort
 wurden sie von `async`/`await` abgelöst.
-
-Hinweis: Zwei Lambda-Aufrufe, die gleichzeitig dasselbe Objekt in S3 ändern: lesen,
-ändern, zurückschreiben. Derselbe _Lost Update_ wie oben, nur dass Ihnen
-diesmal kein `fcntl.flock` hilft – es gibt keinen gemeinsamen Kernel mehr, an
-dessen Inode eine Sperre hängen könnte. Übrig bleibt, was in dieser Übung das
-Versionsfeld war: eine Bedingung, die der Speicher selbst prüft. Bei S3 heißt
-das `If-Match` auf den ETag, bei DynamoDB `ConditionExpression`, bei Ihrer API
-`412 Precondition Failed`.
-
-Serverless nimmt Ihnen also die Threads ab – und zwingt Sie im selben Zug zu
-**optimistischer Nebenläufigkeit**, weil pessimistisches Sperren dort gar nicht
-mehr zur Verfügung steht. Das ist der Grund, warum diese Übung nicht historisch
-ist: Sie lernen hier am kleinen Beispiel, was Ihnen in jeder verteilten
-Architektur wieder begegnet, nur ohne die Möglichkeit, es mit einer Sperre
-zuzudecken.
-
-### Die Frage, auf die es hinausläuft
-
-Wenn Sie durch sind, beantworten Sie diese drei – sie sind der Anschluss an das,
-was Sie oben gebaut haben:
-
-1. Warum schützt `threading.Lock` Ihre Zählung bei `--reload`, aber nicht bei
-   `--workers 4`? Was genau teilen sich vier Worker, und was nicht?
-2. `fcntl.flock` funktioniert _auch_ zwischen Threads eines Prozesses. Warum
-   nimmt man trotzdem `threading.Lock`, wenn es nur um Threads geht?
-3. Ihre API läuft mit vier Workern, und jeder Worker bearbeitet Requests in
-   mehreren Threads. Welche der beiden Sperren brauchen Sie – und warum
-   beantwortet sich die Frage nicht mit „beide", sondern mit einem Blick darauf,
-   _was_ geschützt werden muss?
