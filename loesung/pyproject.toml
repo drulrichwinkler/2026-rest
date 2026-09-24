@@ -7,7 +7,15 @@ authors = [
     { name = "uli.winkler", email = "uli.winkler@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "httpx",
+]
+
+[dependency-groups]
+dev = ["pytest"]
 
 [project.scripts]
 loesung = "loesung:main"
